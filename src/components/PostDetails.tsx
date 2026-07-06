@@ -8,6 +8,7 @@ import { Post } from '../types/Post';
 import { Comment, CommentData } from '../types/Comment';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { commentsSlice } from '../features/comments';
+import classNames from 'classnames';
 
 type Props = {
   post: Post;
@@ -123,8 +124,10 @@ export const PostDetails: React.FC<Props> = ({ post }) => {
           </button>
         )}
 
-        {loaded && !hasError && visible && (
-          <NewCommentForm onSubmit={addComment} />
+        {loaded && !hasError && (
+          <div className={classNames({ 'is-hidden': !visible })}>
+            <NewCommentForm onSubmit={addComment} />
+          </div>
         )}
       </div>
     </div>

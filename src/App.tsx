@@ -27,10 +27,13 @@ export const App: React.FC = () => {
     hasError,
   } = useAppSelector(state => state.posts);
   const selectedPost = useAppSelector(state => state.selectedPost);
+  const users = useAppSelector(state => state.users);
 
   useEffect(() => {
-    getUsers().then(data => dispatch(usersSlice.actions.setUsers(data)));
-  }, [dispatch]);
+    if (users.length === 0) {
+      getUsers().then(data => dispatch(usersSlice.actions.setUsers(data)));
+    }
+  }, [dispatch, users.length]);
 
   useEffect(() => {
     dispatch(selectedPostSlice.actions.setSelectedPost(null));

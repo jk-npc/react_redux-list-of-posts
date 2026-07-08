@@ -8,7 +8,6 @@ import { Post } from '../types/Post';
 import { Comment, CommentData } from '../types/Comment';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { commentsSlice } from '../features/comments';
-import classNames from 'classnames';
 
 type Props = {
   post: Post;
@@ -22,6 +21,17 @@ export const PostDetails: React.FC<Props> = ({ post }) => {
     hasError,
   } = useAppSelector(state => state.comments);
   const [visible, setVisible] = useState(false);
+
+  const [formValues, setFormValues] = useState({
+    name: '',
+    email: '',
+    body: '',
+  });
+  const [formErrors, setFormErrors] = useState({
+    name: false,
+    email: false,
+    body: false,
+  });
 
   useEffect(() => {
     dispatch(commentsSlice.actions.setLoaded(false));
@@ -124,10 +134,14 @@ export const PostDetails: React.FC<Props> = ({ post }) => {
           </button>
         )}
 
-        {loaded && !hasError && (
-          <div className={classNames({ 'is-hidden': !visible })}>
-            <NewCommentForm onSubmit={addComment} />
-          </div>
+        {loaded && !hasError && visible && (
+          <NewCommentForm
+            onSubmit={addComment}
+            values={formValues}
+            errors={formErrors}
+            onValuesChange={setFormValues}
+            onErrorsChange={setFormErrors}
+          />
         )}
       </div>
     </div>
